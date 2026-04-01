@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소부장포럼 — 신규 회원 가입 신청</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── 관리자 배포 전 확인 사항 ──────────────────────────────
+       SUBMIT_URL 을 아래 script 블록의 설정값으로 변경하세요.
+       해당 값 외에 DB 자격증명은 이 파일에 포함되지 않습니다.
+    ─────────────────────────────────────────────────────── */
+        :root {
+            --bg: #F5F4F0;
+            --surface: #FFFFFF;
+            --surface2: #EFEDE8;
+            --border: #E0DBD3;
+            --border2: #C5BEB4;
+            --text: #1A1916;
+            --text2: #6B6560;
+            --text3: #A8A29C;
+            --green: #1B9970;
+            --green-dark: #116B50;
+            --green-light: #E8F5F0;
+            --blue: #2E7FD8;
+            --blue-light: #EBF4FF;
+            --amber: #C97E10;
+            --amber-light: #FFF8EB;
+            --red: #D94F4F;
+            --red-light: #FFF2F2;
+            --font: 'Noto Sans KR', sans-serif;
+            --radius: 8px;
+            --radius-lg: 14px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, .07);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px 100px;
+        }
+
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            animation: up .5s ease;
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── HEADER ── */
+        .hdr {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: var(--green);
+            color: #fff;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 18px rgba(27, 153, 112, .3);
+        }
+
+        .hdr h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -.02em;
+        }
+
+        .hdr p {
+            font-size: 14px;
+            color: var(--text2);
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+
+        .hdr .req-note {
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .card-hdr {
+            padding: 14px 22px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card-hdr .sub {
+            font-size: 11px;
+            color: var(--text3);
+            margin-left: auto;
+            font-weight: 400;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* ── TYPE SELECTOR ── */
+        .type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .type-btn {
+            padding: 20px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s;
+            background: var(--surface2);
+        }
+
+        .type-btn.active {
+            border-color: var(--green);
+            background: var(--green-light);
+        }
+
+        .type-btn .t-icon {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: var(--text3);
+            transition: all .2s;
+        }
+
+        .type-btn.active .t-icon {
+            background: var(--green);
+            color: #fff;
+        }
+
+        .type-btn .t-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text2);
+        }
+
+        .type-btn.active .t-title {
+            color: var(--green-dark);
+        }
+
+        .type-btn .t-sub {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 4px;
+        }
+
+        /* ── SECTION ── */
+        .section {
+            display: none;
+        }
+
+        .section.on {
+            display: block;
+            animation: up .3s ease;
+        }
+
+        .sec-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text3);
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .sec-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .sn {
+            background: var(--green);
+            color: #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        /* ── FORM ── */
+        .fg {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .fg label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+        }
+
+        .fg label .r {
+            color: var(--red);
+        }
+
+        .fi {
+            padding: 10px 13px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: var(--font);
+            outline: none;
+            background: #FAFAF8;
+            width: 100%;
+            transition: all .2s;
+        }
+
+        .fi:focus {
+            border-color: var(--green);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--green-light);
+        }
+
+        select.fi {
+            cursor: pointer;
+        }
+
+        textarea.fi {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        /* ── FILE UPLOAD ── */
+        .fua {
+            border: 2px dashed var(--border2);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            background: var(--surface2);
+            position: relative;
+        }
+
+        .fua:hover,
+        .fua.drag {
+            border-color: var(--green);
+            background: var(--green-light);
+        }
+
+        .fua input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .fua .fi-ico {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .fua .fi-lbl {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text2);
+        }
+
+        .fua .fi-sub {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 3px;
+        }
+
+        .fprev {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--green-light);
+            border: 1px solid #8FD9C0;
+            border-radius: var(--radius);
+            font-size: 12px;
+        }
+
+        .fprev.on {
+            display: flex;
+        }
+
+        .fprev img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .fprev .fn {
+            flex: 1;
+            font-weight: 500;
+            color: var(--green-dark);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .fprev .fs {
+            color: var(--text3);
+            flex-shrink: 0;
+            font-size: 11px;
+        }
+
+        .frm {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text3);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .frm:hover {
+            color: var(--red);
+        }
+
+        .fgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        /* ── PERSON BLOCK ── */
+        .pb {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .pb-hdr {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pnum {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .plbl {
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .prm {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--red);
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .prm:hover {
+            background: var(--red-light);
+            border-color: var(--red);
+        }
+
+        .pb-body {
+            padding: 16px;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 13px;
+            border: 2px dashed var(--border2);
+            border-radius: var(--radius-lg);
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: var(--font);
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .2s;
+            margin-bottom: 18px;
+        }
+
+        .add-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+            background: var(--green-light);
+        }
+
+        /* ── PROGRESS ── */
+        .prog-wrap {
+            display: none;
+            margin-top: 12px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            height: 5px;
+        }
+
+        .prog-wrap.on {
+            display: block;
+        }
+
+        .prog-bar {
+            height: 100%;
+            background: var(--green);
+            width: 0;
+            transition: width .4s ease;
+            border-radius: 4px;
+        }
+
+        .prog-txt {
+            font-size: 12px;
+            color: var(--text2);
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        /* ── SUBMIT ── */
+        .sub-btn {
+            width: 100%;
+            padding: 17px;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+            box-shadow: 0 4px 16px rgba(27, 153, 112, .28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sub-btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+        }
+
+        .sub-btn:disabled {
+            background: var(--text3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            display: none;
+        }
+
+        .spinner.on {
+            display: block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .notice {
+            font-size: 11px;
+            color: var(--text3);
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.8;
+        }
+
+        /* ── NOT CONFIGURED ── */
+        .not-cfg {
+            background: var(--amber-light);
+            border: 1px solid #F5C87A;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .not-cfg h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 8px;
+        }
+
+        .not-cfg p {
+            font-size: 13px;
+            color: var(--text2);
+        }
+
+        /* ── SUCCESS ── */
+        .success {
+            display: none;
+            text-align: center;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 64px 40px;
+        }
+
+        .success.on {
+            display: block;
+            animation: up .5s ease;
+        }
+
+        .s-icon {
+            width: 84px;
+            height: 84px;
+            background: var(--green-light);
+            color: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+            animation: pulse 2.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(27, 153, 112, .4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 22px rgba(27, 153, 112, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(27, 153, 112, 0);
+            }
+        }
+
+        .success h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .success p {
+            color: var(--text2);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 12px 30px;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-weight: 500;
+        }
+
+        .btn-back:hover {
+            background: var(--border);
+        }
+
+        @media (max-width:600px) {
+
+            .grid2,
+            .fgrid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
+
+            .type-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card-body {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="hdr">
+            <div class="logo">협</div>
+            <h1>소부장포럼 가입 신청</h1>
+            <p>아래 양식을 작성해 주시면 사무국에서 확인 후 연락드리겠습니다.</p>
+            <p class="req-note">* 필수 항목 &nbsp;|&nbsp; 파일은 최대 10MB</p>
+        </div>
+
+        <!-- 미설정 안내 (SUBMIT_URL 이 기본값인 경우) -->
+        <div class="not-cfg" id="not-cfg">
+            <h3>⚠ 신청 접수 준비 중입니다</h3>
+            <p>현재 가입 신청 기능이 활성화되지 않았습니다.<br>
+                사무국에 문의해 주시기 바랍니다.</p>
+        </div>
+
+        <!-- FORM -->
+        <div id="form-wrap">
+
+            <!-- 1. 회원 구분 -->
+            <div class="card">
+                <div class="card-hdr">① 회원 구분</div>
+                <div class="card-body">
+                    <div class="type-grid">
+                        <div class="type-btn active" id="btn-corp" onclick="switchType('기업')">
+                            <div class="t-icon">
+                                <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="2" y="3" width="12" height="10" rx="2" />
+                                    <path d="M5 7h6M5 10h4" />
+                                </svg>
+                            </div>
+                            <div class="t-title">기업 회원</div>
+                            <div class="t-sub">기업·기관 단위 가입</div>
+                        </div>
+                        <div class="type-btn" id="btn-ind" onclick="switchType('개인')">
+                            <div class="t-icon">
+                                <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="8" cy="5" r="2.5" />
+                                    <path d="M2.5 13c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" />
+                                </svg>
+                            </div>
+                            <div class="t-title">개인 회원</div>
+                            <div class="t-sub">개인 자격 가입</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ 기업 ═══ -->
+            <div id="sec-corp" class="section on">
+
+                <!-- 기업 기본 정보 -->
+                <div class="card">
+                    <div class="card-hdr">② 기업 기본 정보</div>
+                    <div class="card-body">
+                        <div class="grid2">
+                            <div class="fg full">
+                                <label>회사명 <span class="r">*</span></label>
+                                <input class="fi" id="c-company" placeholder="(주)회사명">
+                            </div>
+                            <div class="fg">
+                                <label>분류</label>
+                                <select class="fi" id="c-category">
+                                    <option value="IT">IT</option>
+                                    <option value="소재">소재</option>
+                                    <option value="부품">부품</option>
+                                    <option value="장비">장비</option>
+                                    <option value="대학">대학</option>
+                                    <option value="연구소">연구소</option>
+                                    <option value="투자">투자</option>
+                                    <option value="기타">기타</option>
+                                </select>
+                            </div>
+                            <div class="fg">
+                                <label>지역</label>
+                                <select class="fi" id="c-region">
+                                    <option value="">선택</option>
+                                    <option>서울</option>
+                                    <option>경기</option>
+                                    <option>인천</option>
+                                    <option>부산</option>
+                                    <option>대구</option>
+                                    <option>광주</option>
+                                    <option>대전</option>
+                                    <option>울산</option>
+                                    <option>기타</option>
+                                </select>
+                            </div>
+                            <div class="fg">
+                                <label>홈페이지</label>
+                                <input class="fi" id="c-web" placeholder="https://">
+                            </div>
+                            <div class="fg">
+                                <label>전문분야</label>
+                                <input class="fi" id="c-expertise" placeholder="예: 반도체, 배터리">
+                            </div>
+                            <div class="fg full">
+                                <label>주소</label>
+                                <input class="fi" id="c-address" placeholder="사업장 주소">
+                            </div>
+                            <div class="fg full">
+                                <label>비고 / 문의사항</label>
+                                <textarea class="fi" id="c-note" placeholder="기타 전달하실 내용"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 기업 서류 파일 -->
+                        <div class="sec-title"><span class="sn">📎</span> 기업 서류 첨부</div>
+                        <div class="fgrid">
+                            <div class="fg">
+                                <label>회사 로고 (PNG)</label>
+                                <div class="fua" id="drop-logo" ondragover="dov(event,this)" ondragleave="dlv(this)"
+                                    ondrop="dop(event,'logo')">
+                                    <input type="file" id="file-logo" accept="image/png,image/jpeg,image/webp"
+                                        onchange="hf(event,'logo')">
+                                    <div class="fi-ico">🖼</div>
+                                    <div class="fi-lbl">로고 이미지</div>
+                                    <div class="fi-sub">PNG / JPG · 드래그 또는 클릭</div>
+                                </div>
+                                <div class="fprev" id="prev-logo">
+                                    <img id="prev-logo-img" src="" alt="">
+                                    <span class="fn" id="prev-logo-n"></span>
+                                    <span class="fs" id="prev-logo-s"></span>
+                                    <button class="frm" type="button" onclick="rf('logo')">×</button>
+                                </div>
+                            </div>
+                            <div class="fg">
+                                <label>사업자등록증</label>
+                                <div class="fua" id="drop-bizreg" ondragover="dov(event,this)" ondragleave="dlv(this)"
+                                    ondrop="dop(event,'bizreg')">
+                                    <input type="file" id="file-bizreg" accept="image/*,application/pdf"
+                                        onchange="hf(event,'bizreg')">
+                                    <div class="fi-ico">📄</div>
+                                    <div class="fi-lbl">사업자등록증</div>
+                                    <div class="fi-sub">PDF / 이미지 · 드래그 또는 클릭</div>
+                                </div>
+                                <div class="fprev" id="prev-bizreg">
+                                    <img id="prev-bizreg-img" src="" alt="" style="display:none">
+                                    <span class="fn" id="prev-bizreg-n"></span>
+                                    <span class="fs" id="prev-bizreg-s"></span>
+                                    <button class="frm" type="button" onclick="rf('bizreg')">×</button>
+                                </div>
+                            </div>
+                            <div class="fg full">
+                                <label>회사소개서 / 브로슈어</label>
+                                <div class="fua" id="drop-brochure" ondragover="dov(event,this)" ondragleave="dlv(this)"
+                                    ondrop="dop(event,'brochure')">
+                                    <input type="file" id="file-brochure"
+                                        accept="application/pdf,image/*,.pptx,.ppt,.docx"
+                                        onchange="hf(event,'brochure')">
+                                    <div class="fi-ico">📑</div>
+                                    <div class="fi-lbl">회사소개서</div>
+                                    <div class="fi-sub">PDF / PPT / 이미지 · 드래그 또는 클릭</div>
+                                </div>
+                                <div class="fprev" id="prev-brochure">
+                                    <img id="prev-brochure-img" src="" alt="" style="display:none">
+                                    <span class="fn" id="prev-brochure-n"></span>
+                                    <span class="fs" id="prev-brochure-s"></span>
+                                    <button class="frm" type="button" onclick="rf('brochure')">×</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 소속 인원 -->
+                <div class="card">
+                    <div class="card-hdr">
+                        ③ 소속 인원 정보
+                        <span class="sub">기본 2인까지 무료 · 이후 1인당 연 10만원 추가</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="persons-wrap"></div>
+                        <button class="add-btn" type="button" onclick="addPerson()">
+                            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M8 3v10M3 8h10" />
+                            </svg>
+                            인원 추가
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /sec-corp -->
+
+            <!-- ═══ 개인 ═══ -->
+            <div id="sec-ind" class="section">
+
+                <div class="card">
+                    <div class="card-hdr">② 개인 기본 정보</div>
+                    <div class="card-body">
+                        <div class="grid2">
+                            <div class="fg">
+                                <label>성함 <span class="r">*</span></label>
+                                <input class="fi" id="i-name" placeholder="홍길동">
+                            </div>
+                            <div class="fg">
+                                <label>직책 / 직위</label>
+                                <input class="fi" id="i-position" placeholder="예: 교수, 연구위원, 이사">
+                            </div>
+                            <div class="fg">
+                                <label>모바일 <span class="r">*</span></label>
+                                <input class="fi" id="i-mobile" placeholder="010-0000-0000" oninput="fmtMobile(this)">
+                            </div>
+                            <div class="fg">
+                                <label>이메일 <span class="r">*</span></label>
+                                <input class="fi" id="i-email" type="email" placeholder="email@example.com">
+                            </div>
+                            <div class="fg">
+                                <label>전문분야</label>
+                                <input class="fi" id="i-expertise" placeholder="예: 에너지, 반도체">
+                            </div>
+                            <div class="fg">
+                                <label>관심 포럼</label>
+                                <input class="fi" id="i-forum" placeholder="예: 미래차, ESG">
+                            </div>
+                            <div class="fg full">
+                                <label>주소</label>
+                                <input class="fi" id="i-address" placeholder="주소">
+                            </div>
+                        </div>
+
+                        <!-- 소속기관 -->
+                        <div class="sec-title"><span class="sn">🏛</span> 소속기관 정보 <span
+                                style="font-size:10px;text-transform:none;color:var(--text3);margin-left:4px">(선택)</span>
+                        </div>
+                        <div class="grid2">
+                            <div class="fg full">
+                                <label>소속기관명</label>
+                                <input class="fi" id="i-org" placeholder="예: 한국대학교, (주)ABC연구소">
+                            </div>
+                            <div class="fg">
+                                <label>기관 유형</label>
+                                <select class="fi" id="i-org-type">
+                                    <option value="">선택</option>
+                                    <option value="대학">대학 / 대학원</option>
+                                    <option value="연구소">연구소 / 연구원</option>
+                                    <option value="기업">기업</option>
+                                    <option value="공공기관">공공기관 / 정부</option>
+                                    <option value="협회단체">협회 / 단체</option>
+                                    <option value="기타">기타</option>
+                                </select>
+                            </div>
+                            <div class="fg">
+                                <label>부서 / 소속</label>
+                                <input class="fi" id="i-dept" placeholder="예: 경영학과, R&D센터">
+                            </div>
+                        </div>
+
+                        <!-- 개인 파일 첨부 -->
+                        <div class="sec-title"><span class="sn">📎</span> 파일 첨부</div>
+                        <div class="fgrid">
+                            <div class="fg">
+                                <label>명함 이미지</label>
+                                <div class="fua" id="drop-icard" ondragover="dov(event,this)" ondragleave="dlv(this)"
+                                    ondrop="dop(event,'icard')">
+                                    <input type="file" id="file-icard" accept="image/*" onchange="hf(event,'icard')">
+                                    <div class="fi-ico">🪪</div>
+                                    <div class="fi-lbl">명함 이미지</div>
+                                    <div class="fi-sub">PNG / JPG · 앞면 또는 뒷면</div>
+                                </div>
+                                <div class="fprev" id="prev-icard">
+                                    <img id="prev-icard-img" src="" alt="">
+                                    <span class="fn" id="prev-icard-n"></span>
+                                    <span class="fs" id="prev-icard-s"></span>
+                                    <button class="frm" type="button" onclick="rf('icard')">×</button>
+                                </div>
+                            </div>
+                            <div class="fg">
+                                <label>이력서 / CV</label>
+                                <div class="fua" id="drop-resume" ondragover="dov(event,this)" ondragleave="dlv(this)"
+                                    ondrop="dop(event,'resume')">
+                                    <input type="file" id="file-resume" accept="application/pdf,.doc,.docx,image/*"
+                                        onchange="hf(event,'resume')">
+                                    <div class="fi-ico">📋</div>
+                                    <div class="fi-lbl">이력서 첨부</div>
+                                    <div class="fi-sub">PDF / Word / 이미지</div>
+                                </div>
+                                <div class="fprev" id="prev-resume">
+                                    <img id="prev-resume-img" src="" alt="" style="display:none">
+                                    <span class="fn" id="prev-resume-n"></span>
+                                    <span class="fs" id="prev-resume-s"></span>
+                                    <button class="frm" type="button" onclick="rf('resume')">×</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fg">
+                            <label>비고 / 지원 동기</label>
+                            <textarea class="fi" id="i-note" placeholder="가입 동기나 기타 전달하실 내용을 자유롭게 작성해주세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /sec-ind -->
+
+            <!-- 제출 -->
+            <button class="sub-btn" id="sub-btn" onclick="doSubmit()">
+                <span class="spinner" id="spinner"></span>
+                가입 신청 완료하기
+            </button>
+            <div class="prog-wrap" id="prog-wrap">
+                <div class="prog-bar" id="prog-bar"></div>
+            </div>
+            <div class="prog-txt" id="prog-txt"></div>
+            <p class="notice">
+                신청 후 사무국에서 검토 과정을 거쳐 연락드립니다.<br>
+                회비: 기업회원 70만원/년(2인 포함) · 개인회원 30만원/년
+            </p>
+
+        </div><!-- /form-wrap -->
+
+        <!-- SUCCESS -->
+        <div class="success" id="success">
+            <div class="s-icon">✓</div>
+            <h2>신청이 완료되었습니다!</h2>
+            <p>
+                소부장포럼 가입 신청이 정상 접수되었습니다.<br>
+                사무국에서 내용 검토 후 신청해 주신 연락처로 안내드리겠습니다.<br>
+                <span style="font-size:12px;color:var(--text3)">보통 2~3 영업일 이내에 연락드립니다.</span>
+            </p>
+            <button class="btn-back" onclick="location.reload()">다른 신청서 작성</button>
+        </div>
+
+    </div><!-- /container -->
+
+    <script>
+        // =========================================================
+        //  ★ 관리자 설정 — 배포 전 반드시 변경하세요 ★
+        //  Supabase 대시보드 > Edge Functions > submit-application
+        //  > 함수 URL 을 아래에 붙여넣으세요.
+        //
+        //  예: 'https://abcdefgh.supabase.co/functions/v1/submit-application'
+        // =========================================================
+        const SUBMIT_URL = 'YOUR_EDGE_FUNCTION_URL_HERE';
+
+        // ── 상태 ──────────────────────────────────────────────────
+        let curType = '기업';
+        let personCnt = 0;
+        const fileStore = {};  // { key: File }
+
+        // ── 초기화 ────────────────────────────────────────────────
+        (function init() {
+            if (!SUBMIT_URL || SUBMIT_URL === 'YOUR_EDGE_FUNCTION_URL_HERE') {
+                document.getElementById('not-cfg').style.display = 'block';
+                document.getElementById('sub-btn').disabled = true;
+            }
+            addPerson(); // 대표자 1명 기본
+        })();
+
+        // ── 회원 구분 전환 ────────────────────────────────────────
+        function switchType(t) {
+            if (curType === t) return;
+            curType = t;
+            document.getElementById('btn-corp').classList.toggle('active', t === '기업');
+            document.getElementById('btn-ind').classList.toggle('active', t === '개인');
+            document.getElementById('sec-corp').classList.toggle('on', t === '기업');
+            document.getElementById('sec-ind').classList.toggle('on', t === '개인');
+        }
+
+        // ── 소속 인원 (기업) ─────────────────────────────────────
+        function addPerson() {
+            const idx = personCnt++;
+            const first = idx === 0;
+            const wrap = document.getElementById('persons-wrap');
+            const div = document.createElement('div');
+            div.className = 'pb'; div.id = `pb-${idx}`;
+            div.innerHTML = `
+    <div class="pb-hdr">
+      <div class="pnum">${idx + 1}</div>
+      <div class="plbl">${first ? '대표자 / 담당자' : `추가 인원 ${idx}`}</div>
+      ${!first ? `<button class="prm" type="button" onclick="rmPerson(${idx})">삭제</button>` : ''}
+    </div>
+    <div class="pb-body">
+      <div class="grid2">
+        <div class="fg">
+          <label>성함 ${first ? '<span class="r">*</span>' : ''}</label>
+          <input class="fi pn" id="p${idx}-n" placeholder="홍길동">
+        </div>
+        <div class="fg">
+          <label>직책</label>
+          <input class="fi pp" id="p${idx}-p" placeholder="대표이사, 팀장 등">
+        </div>
+        <div class="fg">
+          <label>모바일 ${first ? '<span class="r">*</span>' : ''}</label>
+          <input class="fi pm" id="p${idx}-m" placeholder="010-0000-0000" oninput="fmtMobile(this)">
+        </div>
+        <div class="fg">
+          <label>이메일 ${first ? '<span class="r">*</span>' : ''}</label>
+          <input class="fi pe" id="p${idx}-e" type="email" placeholder="email@example.com">
+        </div>
+        <div class="fg">
+          <label>전문분야</label>
+          <input class="fi px" id="p${idx}-x" placeholder="예: 반도체">
+        </div>
+        <div class="fg">
+          <label>관심 포럼</label>
+          <input class="fi pf" id="p${idx}-f" placeholder="예: ESG">
+        </div>
+      </div>
+      <div class="fg" style="margin-top:4px">
+        <label>명함 이미지</label>
+        <div class="fua" id="drop-card-${idx}"
+          ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dop(event,'card_${idx}')">
+          <input type="file" id="file-card-${idx}" accept="image/*"
+            onchange="hf(event,'card_${idx}')">
+          <div class="fi-ico">🪪</div>
+          <div class="fi-lbl">명함 이미지 첨부</div>
+          <div class="fi-sub">PNG / JPG · 클릭 또는 드래그</div>
+        </div>
+        <div class="fprev" id="prev-card-${idx}">
+          <img id="prev-card-${idx}-img" src="" alt="">
+          <span class="fn" id="prev-card-${idx}-n"></span>
+          <span class="fs" id="prev-card-${idx}-s"></span>
+          <button class="frm" type="button" onclick="rf('card_${idx}')">×</button>
+        </div>
+      </div>
+    </div>`;
+            wrap.appendChild(div);
+            renum();
+        }
+
+        function rmPerson(idx) {
+            const el = document.getElementById(`pb-${idx}`);
+            if (el) el.remove();
+            delete fileStore[`card_${idx}`];
+            renum();
+        }
+
+        function renum() {
+            document.querySelectorAll('#persons-wrap .pb').forEach((b, i) => {
+                const n = b.querySelector('.pnum');
+                const l = b.querySelector('.plbl');
+                if (n) n.textContent = i + 1;
+                if (l) l.textContent = i === 0 ? '대표자 / 담당자' : `추가 인원 ${i}`;
+            });
+        }
+
+        function getPersons() {
+            return [...document.querySelectorAll('#persons-wrap .pb')].map(b => {
+                const pidx = b.id.replace('pb-', '');
+                return {
+                    _idx: pidx,
+                    name: b.querySelector('.pn')?.value.trim() || '',
+                    position: b.querySelector('.pp')?.value.trim() || '',
+                    mobile: b.querySelector('.pm')?.value.trim() || '',
+                    email: b.querySelector('.pe')?.value.trim() || '',
+                    expertise: b.querySelector('.px')?.value.trim() || '',
+                    forum: b.querySelector('.pf')?.value.trim() || '',
+                };
+            });
+        }
+
+        // ── 파일 처리 ────────────────────────────────────────────
+        function hf(e, key) { const f = e.target.files[0]; if (f) store(key, f); }
+
+        function dop(e, key) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag');
+            const f = e.dataTransfer.files[0];
+            if (!f) return;
+            store(key, f);
+            const inp = document.getElementById(`file-${key}`);
+            if (inp) { const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; }
+        }
+        function dov(e, el) { e.preventDefault(); el.classList.add('drag'); }
+        function dlv(el) { el.classList.remove('drag'); }
+
+        function store(key, file) {
+            fileStore[key] = file;
+            showPrev(key, file);
+        }
+
+        function rf(key) {
+            delete fileStore[key];
+            const p = document.getElementById(`prev-${key}`);
+            if (p) p.classList.remove('on');
+            const inp = document.getElementById(`file-${key}`);
+            if (inp) inp.value = '';
+        }
+
+        function showPrev(key, file) {
+            const p = document.getElementById(`prev-${key}`);
+            if (!p) return;
+            const n = document.getElementById(`prev-${key}-n`);
+            const s = document.getElementById(`prev-${key}-s`);
+            const img = document.getElementById(`prev-${key}-img`);
+            if (n) n.textContent = file.name;
+            if (s) s.textContent = fmtSize(file.size);
+            if (img) {
+                if (file.type.startsWith('image/')) {
+                    img.src = URL.createObjectURL(file);
+                    img.style.display = 'block';
+                } else {
+                    img.style.display = 'none';
+                }
+            }
+            p.classList.add('on');
+        }
+
+        function fmtSize(b) {
+            if (b < 1024) return b + 'B';
+            if (b < 1048576) return (b / 1024).toFixed(1) + 'KB';
+            return (b / 1048576).toFixed(1) + 'MB';
+        }
+
+        // ── 전화번호 포맷 ─────────────────────────────────────────
+        function fmtMobile(inp) {
+            let v = inp.value.replace(/\D/g, '').slice(0, 11);
+            if (v.length > 7) v = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7);
+            else if (v.length > 3) v = v.slice(0, 3) + '-' + v.slice(3);
+            inp.value = v;
+        }
+
+        // ── 유효성 검사 ───────────────────────────────────────────
+        function validate() {
+            if (curType === '기업') {
+                const co = v('c-company');
+                if (!co) { alert('회사명을 입력해주세요.'); focus('c-company'); return false; }
+                const ps = getPersons();
+                if (!ps.length || !ps[0].name) { alert('대표자 성함을 입력해주세요.'); focus(`p0-n`); return false; }
+                if (!ps[0].mobile) { alert('대표자 모바일을 입력해주세요.'); focus(`p0-m`); return false; }
+                if (!ps[0].email) { alert('대표자 이메일을 입력해주세요.'); focus(`p0-e`); return false; }
+            } else {
+                if (!v('i-name')) { alert('성함을 입력해주세요.'); focus('i-name'); return false; }
+                if (!v('i-mobile')) { alert('모바일을 입력해주세요.'); focus('i-mobile'); return false; }
+                if (!v('i-email')) { alert('이메일을 입력해주세요.'); focus('i-email'); return false; }
+            }
+            return true;
+        }
+        const v = id => document.getElementById(id)?.value.trim() || '';
+        const focus = id => document.getElementById(id)?.focus();
+
+        // ── 제출 ─────────────────────────────────────────────────
+        async function doSubmit() {
+            if (SUBMIT_URL === 'YOUR_EDGE_FUNCTION_URL_HERE') {
+                alert('가입 신청 기능이 아직 설정되지 않았습니다.\n사무국에 문의해 주세요.');
+                return;
+            }
+            if (!validate()) return;
+
+            const btn = document.getElementById('sub-btn');
+            const spin = document.getElementById('spinner');
+            const pw = document.getElementById('prog-wrap');
+            const pb = document.getElementById('prog-bar');
+            const pt = document.getElementById('prog-txt');
+
+            btn.disabled = true;
+            spin.classList.add('on');
+            pw.classList.add('on');
+
+            const setP = (pct, txt) => {
+                pb.style.width = pct + '%';
+                if (pt) pt.textContent = txt || '';
+            };
+
+            try {
+                const form = new FormData();
+                setP(5, '데이터 준비 중…');
+
+                if (curType === '기업') {
+                    form.append('type', '기업');
+                    form.append('category', v('c-category'));
+                    form.append('company', v('c-company'));
+                    form.append('expertise', v('c-expertise'));
+                    form.append('forum', v('c-forum') || '');
+                    form.append('address', v('c-address'));
+                    form.append('region', v('c-region'));
+                    form.append('web', v('c-web'));
+                    form.append('note', v('c-note'));
+
+                    // 파일
+                    if (fileStore['logo']) form.append('logo', fileStore['logo']);
+                    if (fileStore['bizreg']) form.append('bizreg', fileStore['bizreg']);
+                    if (fileStore['brochure']) form.append('brochure', fileStore['brochure']);
+
+                    // 소속 인원 JSON + 명함
+                    const persons = getPersons().filter(p => p.name);
+                    form.append('persons', JSON.stringify(persons));
+                    persons.forEach((p, i) => {
+                        const key = `card_${p._idx}`;
+                        if (fileStore[key]) form.append(`card_${i}`, fileStore[key]);
+                    });
+
+                } else {
+                    form.append('type', '개인');
+                    form.append('name', v('i-name'));
+                    form.append('position', v('i-position'));
+                    form.append('mobile', v('i-mobile'));
+                    form.append('email', v('i-email'));
+                    form.append('expertise', v('i-expertise'));
+                    form.append('forum', v('i-forum'));
+                    form.append('address', v('i-address'));
+                    form.append('note', v('i-note'));
+                    form.append('org_name', v('i-org'));
+                    form.append('org_type', v('i-org-type'));
+                    form.append('dept', v('i-dept'));
+                    if (fileStore['icard']) form.append('ind_card', fileStore['icard']);
+                    if (fileStore['resume']) form.append('ind_resume', fileStore['resume']);
+                }
+
+                setP(30, '파일 전송 중…');
+
+                const res = await fetch(SUBMIT_URL, { method: 'POST', body: form });
+                setP(90, '처리 중…');
+
+                let data;
+                try { data = await res.json(); } catch { throw new Error('서버 응답 오류'); }
+                if (!res.ok || !data.ok) throw new Error(data.error || '서버 오류가 발생했습니다.');
+
+                setP(100, '완료!');
+                setTimeout(() => {
+                    document.getElementById('form-wrap').style.display = 'none';
+                    document.getElementById('success').classList.add('on');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 400);
+
+            } catch (err) {
+                console.error(err);
+                alert('신청 중 오류가 발생했습니다.\n' + err.message);
+                btn.disabled = false;
+                spin.classList.remove('on');
+                pw.classList.remove('on');
+                pb.style.width = '0';
+                if (pt) pt.textContent = '';
+            }
+        }
+    </script>
+</body>
+
+</html>
