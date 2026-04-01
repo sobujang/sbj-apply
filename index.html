@@ -1027,6 +1027,7 @@
         //  예: 'https://abcdefgh.supabase.co/functions/v1/submit-application'
         // =========================================================
         const SUBMIT_URL = 'https://cdlgvneimbstylcugudc.supabase.co/functions/v1/submit-application';
+        const SUPABASE_ANON_KEY = 'sb_publishable_muQHGvl6FV0XzjhStSP-fA_aV9OkE_w'; // Supabase Dashboard > Settings > API > anon public
 
         // ── 상태 ──────────────────────────────────────────────────
         let curType = '기업';
@@ -1295,7 +1296,13 @@
 
                 setP(30, '파일 전송 중…');
 
-                const res = await fetch(SUBMIT_URL, { method: 'POST', body: form });
+                const res = await fetch(SUBMIT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: form
+                });
                 setP(90, '처리 중…');
 
                 let data;
