@@ -9,32 +9,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
-        /* ── 관리자 배포 전 확인 사항 ──────────────────────────────
-       SUBMIT_URL 을 아래 script 블록의 설정값으로 변경하세요.
-       해당 값 외에 DB 자격증명은 이 파일에 포함되지 않습니다.
-    ─────────────────────────────────────────────────────── */
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+        }
+
         :root {
-            --bg: #F5F4F0;
+            --bg: #F8FAFC;
             --surface: #FFFFFF;
-            --surface2: #EFEDE8;
-            --border: #E0DBD3;
-            --border2: #C5BEB4;
-            --text: #1A1916;
-            --text2: #6B6560;
-            --text3: #A8A29C;
-            --green: #1B9970;
-            --green-dark: #116B50;
-            --green-light: #E8F5F0;
-            --blue: #2E7FD8;
-            --blue-light: #EBF4FF;
-            --amber: #C97E10;
-            --amber-light: #FFF8EB;
-            --red: #D94F4F;
-            --red-light: #FFF2F2;
-            --font: 'Noto Sans KR', sans-serif;
-            --radius: 8px;
-            --radius-lg: 14px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, .07);
+            --surface2: #F1F5F9;
+            --border: #E2E8F0;
+            --border-focus: #0F172A;
+            --primary: #0F172A;
+            --primary-hover: #1E293B;
+            --text: #1E293B;
+            --text-muted: #94A3B8;
+            --accent: #3B82F6;
+            --accent-light: #EFF6FF;
+            --red: #EF4444;
+            --red-light: #FEF2F2;
+            --font: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            --radius: 12px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         *,
@@ -51,19 +48,20 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 40px 20px 100px;
+            padding: 60px 20px 100px;
+            word-break: keep-all;
         }
 
         .container {
-            max-width: 740px;
+            max-width: 680px;
             margin: 0 auto;
-            animation: up .5s ease;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes up {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(18px);
+                transform: translateY(20px);
             }
 
             to {
@@ -75,128 +73,136 @@
         /* ── HEADER ── */
         .hdr {
             text-align: center;
-            margin-bottom: 36px;
+            margin-bottom: 48px;
         }
 
         .logo {
-            width: 56px;
-            height: 56px;
-            background: var(--green);
+            width: 64px;
+            height: 64px;
+            background: var(--primary);
             color: #fff;
-            border-radius: 14px;
+            border-radius: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 16px;
-            box-shadow: 0 6px 18px rgba(27, 153, 112, .3);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
         }
 
         .hdr h1 {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -.02em;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+            margin-bottom: 12px;
         }
 
         .hdr p {
-            font-size: 14px;
-            color: var(--text2);
-            margin-top: 8px;
-            line-height: 1.8;
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
         .hdr .req-note {
-            font-size: 11px;
-            color: var(--text3);
+            font-size: 13px;
+            margin-top: 12px;
+            color: var(--text-muted);
+            opacity: 0.8;
         }
 
         /* ── CARD ── */
         .card {
             background: var(--surface);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            margin-bottom: 14px;
+            margin-bottom: 24px;
             overflow: hidden;
+            transition: var(--transition);
         }
 
         .card-hdr {
-            padding: 14px 22px;
+            padding: 20px 24px;
             border-bottom: 1px solid var(--border);
-            background: var(--surface2);
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 13px;
-            font-weight: 600;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            background: #FAFBFC;
         }
 
         .card-hdr .sub {
-            font-size: 11px;
-            color: var(--text3);
+            font-size: 12px;
+            color: var(--text-muted);
             margin-left: auto;
             font-weight: 400;
         }
 
         .card-body {
-            padding: 22px;
+            padding: 32px 24px;
         }
 
         /* ── TYPE SELECTOR ── */
         .type-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
         }
 
         .type-btn {
-            padding: 20px 16px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             cursor: pointer;
             text-align: center;
-            transition: all .2s;
-            background: var(--surface2);
+            transition: var(--transition);
+            background: var(--surface);
+            position: relative;
+        }
+
+        .type-btn:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
         }
 
         .type-btn.active {
-            border-color: var(--green);
-            background: var(--green-light);
+            border-color: var(--primary);
+            background: #F8FAFC;
+            box-shadow: 0 0 0 1px var(--primary);
         }
 
         .type-btn .t-icon {
-            width: 46px;
-            height: 46px;
-            margin: 0 auto 12px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff;
-            color: var(--text3);
-            transition: all .2s;
+            background: var(--surface2);
+            color: var(--primary);
+            transition: var(--transition);
         }
 
         .type-btn.active .t-icon {
-            background: var(--green);
+            background: var(--primary);
             color: #fff;
         }
 
         .type-btn .t-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text2);
-        }
-
-        .type-btn.active .t-title {
-            color: var(--green-dark);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
         }
 
         .type-btn .t-sub {
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
         }
 
         /* ── SECTION ── */
@@ -206,19 +212,19 @@
 
         .section.on {
             display: block;
-            animation: up .3s ease;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .sec-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
-            color: var(--text3);
-            letter-spacing: .07em;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .sec-title::after {
@@ -229,15 +235,15 @@
         }
 
         .sn {
-            background: var(--green);
-            color: #fff;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            background: var(--surface2);
+            color: var(--primary);
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 12px;
             flex-shrink: 0;
         }
 
@@ -245,51 +251,66 @@
         .fg {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
         .fg label {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--text2);
+            color: var(--text);
+            padding-left: 2px;
         }
 
         .fg label .r {
             color: var(--red);
+            margin-left: 2px;
         }
 
         .fi {
-            padding: 10px 13px;
+            height: 52px;
+            padding: 0 16px;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            font-size: 14px;
+            font-size: 15px;
             font-family: var(--font);
             outline: none;
-            background: #FAFAF8;
+            background: var(--surface);
             width: 100%;
-            transition: all .2s;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .fi::placeholder {
+            color: var(--text-muted);
         }
 
         .fi:focus {
-            border-color: var(--green);
-            background: #fff;
-            box-shadow: 0 0 0 3px var(--green-light);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.05);
         }
 
         select.fi {
             cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
         }
 
         textarea.fi {
+            height: auto;
+            padding-top: 14px;
+            padding-bottom: 14px;
             resize: vertical;
-            min-height: 80px;
+            min-height: 120px;
         }
 
         .grid2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 18px;
+            gap: 16px;
         }
 
         .full {
@@ -298,20 +319,20 @@
 
         /* ── FILE UPLOAD ── */
         .fua {
-            border: 2px dashed var(--border2);
+            border: 1px dashed var(--border);
             border-radius: var(--radius);
-            padding: 20px 16px;
+            padding: 32px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all .2s;
-            background: var(--surface2);
+            transition: var(--transition);
+            background: #FAFBFC;
             position: relative;
         }
 
         .fua:hover,
         .fua.drag {
-            border-color: var(--green);
-            background: var(--green-light);
+            border-color: var(--primary);
+            background: var(--surface);
         }
 
         .fua input[type="file"] {
@@ -324,105 +345,114 @@
         }
 
         .fua .fi-ico {
-            font-size: 26px;
-            margin-bottom: 6px;
+            font-size: 32px;
+            margin-bottom: 12px;
         }
 
         .fua .fi-lbl {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--text2);
+            color: var(--text);
         }
 
         .fua .fi-sub {
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 3px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
 
         .fprev {
             display: none;
             align-items: center;
-            gap: 12px;
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: var(--green-light);
-            border: 1px solid #8FD9C0;
+            gap: 16px;
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .fprev.on {
             display: flex;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .fprev img {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             object-fit: cover;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid var(--border);
         }
 
         .fprev .fn {
             flex: 1;
-            font-weight: 500;
-            color: var(--green-dark);
+            font-weight: 600;
+            color: var(--text);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .fprev .fs {
-            color: var(--text3);
+            color: var(--text-muted);
             flex-shrink: 0;
             font-size: 11px;
         }
 
         .frm {
-            background: none;
+            background: var(--surface2);
             border: none;
             cursor: pointer;
-            color: var(--text3);
-            font-size: 18px;
-            flex-shrink: 0;
+            color: var(--text-muted);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: var(--transition);
         }
 
         .frm:hover {
+            background: var(--red-light);
             color: var(--red);
         }
 
         .fgrid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 18px;
+            gap: 16px;
         }
 
         /* ── PERSON BLOCK ── */
         .pb {
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             overflow: hidden;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            background: #fff;
+            transition: var(--transition);
         }
 
         .pb-hdr {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 16px;
-            background: var(--surface2);
+            gap: 12px;
+            padding: 16px 20px;
+            background: #FAFBFC;
             border-bottom: 1px solid var(--border);
         }
 
         .pnum {
             width: 24px;
             height: 24px;
-            border-radius: 50%;
-            background: var(--green);
+            border-radius: 6px;
+            background: var(--primary);
             color: #fff;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -431,21 +461,23 @@
         }
 
         .plbl {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             flex: 1;
+            color: var(--primary);
         }
 
         .prm {
-            background: none;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 4px 10px;
+            border-radius: 8px;
+            padding: 6px 12px;
             font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             color: var(--red);
             font-family: var(--font);
-            transition: all .15s;
+            transition: var(--transition);
         }
 
         .prm:hover {
@@ -454,41 +486,42 @@
         }
 
         .pb-body {
-            padding: 16px;
+            padding: 24px 20px;
         }
 
         .add-btn {
             width: 100%;
-            padding: 13px;
-            border: 2px dashed var(--border2);
-            border-radius: var(--radius-lg);
-            background: transparent;
+            height: 52px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 600;
             font-family: var(--font);
-            color: var(--text2);
+            color: var(--text);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all .2s;
-            margin-bottom: 18px;
+            transition: var(--transition);
+            margin-bottom: 24px;
         }
 
         .add-btn:hover {
-            border-color: var(--green);
-            color: var(--green);
-            background: var(--green-light);
+            border-color: var(--primary);
+            background: #FAFBFC;
+            transform: translateY(-2px);
         }
 
         /* ── PROGRESS ── */
         .prog-wrap {
             display: none;
-            margin-top: 12px;
+            margin-top: 20px;
             background: var(--border);
-            border-radius: 4px;
+            border-radius: 100px;
             overflow: hidden;
-            height: 5px;
+            height: 6px;
         }
 
         .prog-wrap.on {
@@ -497,57 +530,63 @@
 
         .prog-bar {
             height: 100%;
-            background: var(--green);
+            background: var(--primary);
             width: 0;
-            transition: width .4s ease;
-            border-radius: 4px;
+            transition: width 0.4s ease;
+            border-radius: 100px;
         }
 
         .prog-txt {
-            font-size: 12px;
-            color: var(--text2);
+            font-size: 13px;
+            color: var(--text-muted);
             text-align: center;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         /* ── SUBMIT ── */
         .sub-btn {
             width: 100%;
-            padding: 17px;
-            background: var(--green);
+            height: 60px;
+            background: var(--primary);
             color: #fff;
             border: none;
-            border-radius: var(--radius-lg);
-            font-size: 16px;
+            border-radius: var(--radius);
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: all .2s;
-            box-shadow: 0 4px 16px rgba(27, 153, 112, .28);
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
+            margin-top: 12px;
         }
 
         .sub-btn:hover {
-            background: var(--green-dark);
+            background: var(--primary-hover);
             transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+        }
+
+        .sub-btn:active {
+            transform: translateY(0);
         }
 
         .sub-btn:disabled {
-            background: var(--text3);
+            background: var(--text-muted);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
         .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2.5px solid rgba(255, 255, 255, .4);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-top-color: #fff;
             border-radius: 50%;
-            animation: spin .7s linear infinite;
+            animation: spin 0.8s linear infinite;
             display: none;
         }
 
@@ -562,34 +601,34 @@
         }
 
         .notice {
-            font-size: 11px;
-            color: var(--text3);
+            font-size: 13px;
+            color: var(--text-muted);
             text-align: center;
-            margin-top: 14px;
-            line-height: 1.8;
+            margin-top: 24px;
+            line-height: 1.6;
         }
 
         /* ── NOT CONFIGURED ── */
         .not-cfg {
-            background: var(--amber-light);
-            border: 1px solid #F5C87A;
-            border-radius: var(--radius-lg);
+            background: #FFFBEB;
+            border: 1px solid #FEF3C7;
+            border-radius: var(--radius);
             padding: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-align: center;
             display: none;
         }
 
         .not-cfg h3 {
             font-size: 16px;
-            font-weight: 600;
-            color: var(--amber);
+            font-weight: 700;
+            color: #92400E;
             margin-bottom: 8px;
         }
 
         .not-cfg p {
-            font-size: 13px;
-            color: var(--text2);
+            font-size: 14px;
+            color: #B45309;
         }
 
         /* ── SUCCESS ── */
@@ -597,76 +636,90 @@
             display: none;
             text-align: center;
             background: var(--surface);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            padding: 64px 40px;
+            padding: 80px 40px;
         }
 
         .success.on {
             display: block;
-            animation: up .5s ease;
+            animation: fadeIn 0.6s ease-out;
         }
 
         .s-icon {
-            width: 84px;
-            height: 84px;
-            background: var(--green-light);
-            color: var(--green);
+            width: 80px;
+            height: 80px;
+            background: #F0FDF4;
+            color: #16A34A;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            margin: 0 auto 24px;
-            animation: pulse 2.5s ease infinite;
+            margin: 0 auto 32px;
+            animation: successPulse 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes successPulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(27, 153, 112, .4);
+                box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.2);
             }
 
             70% {
-                box-shadow: 0 0 0 22px rgba(27, 153, 112, 0);
+                box-shadow: 0 0 0 20px rgba(22, 163, 74, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(27, 153, 112, 0);
+                box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
             }
         }
 
         .success h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
         }
 
         .success p {
-            color: var(--text2);
-            font-size: 14px;
-            line-height: 1.9;
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 40px;
         }
 
         .btn-back {
-            display: inline-block;
-            margin-top: 28px;
-            padding: 12px 30px;
+            height: 52px;
+            padding: 0 32px;
             background: var(--surface2);
-            color: var(--text);
+            color: var(--primary);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            font-size: 14px;
+            border-radius: var(--radius);
+            font-size: 15px;
             cursor: pointer;
             font-family: var(--font);
-            font-weight: 500;
+            font-weight: 700;
+            transition: var(--transition);
         }
 
         .btn-back:hover {
             background: var(--border);
+            transform: translateY(-2px);
         }
 
         @media (max-width:600px) {
+            body {
+                padding: 40px 16px 60px;
+            }
+
+            .hdr h1 {
+                font-size: 26px;
+            }
+
+            .card-body {
+                padding: 24px 16px;
+            }
 
             .grid2,
             .fgrid {
@@ -681,8 +734,9 @@
                 grid-template-columns: 1fr 1fr;
             }
 
-            .card-body {
-                padding: 16px;
+            .sub-btn {
+                height: 56px;
+                font-size: 16px;
             }
         }
     </style>
@@ -693,10 +747,14 @@
 
         <!-- HEADER -->
         <div class="hdr">
-            <div class="logo">협</div>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+            </div>
             <h1>소부장포럼 가입 신청</h1>
-            <p>아래 양식을 작성해 주시면 사무국에서 확인 후 연락드리겠습니다.</p>
-            <p class="req-note">* 필수 항목 &nbsp;|&nbsp; 파일은 최대 10MB</p>
+            <p>신규 회원 가입을 환영합니다. 전문성 있는 네트워크를 통한 가치를 더해보세요.</p>
+            <p class="req-note">* 필수 항목 &nbsp;|&nbsp; 최대 첨부 용량 10MB</p>
         </div>
 
         <!-- 미설정 안내 (SUBMIT_URL 이 기본값인 경우) -->
@@ -711,7 +769,7 @@
 
             <!-- 1. 회원 구분 -->
             <div class="card">
-                <div class="card-hdr">① 회원 구분</div>
+                <div class="card-hdr">01. 회원 구분 선택</div>
                 <div class="card-body">
                     <div class="type-grid">
                         <div class="type-btn active" id="btn-corp" onclick="switchType('기업')">
@@ -745,7 +803,7 @@
 
                 <!-- 기업 기본 정보 -->
                 <div class="card">
-                    <div class="card-hdr">② 기업 기본 정보</div>
+                    <div class="card-hdr">02. 기업 기본 정보</div>
                     <div class="card-body">
                         <div class="grid2">
                             <div class="fg full">
@@ -860,8 +918,8 @@
                 <!-- 소속 인원 -->
                 <div class="card">
                     <div class="card-hdr">
-                        ③ 소속 인원 정보
-                        <span class="sub">기본 2인까지 무료 · 이후 1인당 연 10만원 추가</span>
+                        03. 소속 인원 정보
+                        <span class="sub">기본 2인 무료 · 추가 인원 인당 10만원/년</span>
                     </div>
                     <div class="card-body">
                         <div id="persons-wrap"></div>
@@ -881,7 +939,7 @@
             <div id="sec-ind" class="section">
 
                 <div class="card">
-                    <div class="card-hdr">② 개인 기본 정보</div>
+                    <div class="card-hdr">02. 개인 기본 정보</div>
                     <div class="card-body">
                         <div class="grid2">
                             <div class="fg">
@@ -998,22 +1056,25 @@
             </div>
             <div class="prog-txt" id="prog-txt"></div>
             <p class="notice">
-                신청 후 사무국에서 검토 과정을 거쳐 연락드립니다.<br>
-                회비: 기업회원 70만원/년(2인 포함) · 개인회원 30만원/년
+                제출하신 내용은 사무국 검토 후 개별 안내 드립니다.<br>
+                연회비: 기업회원 70만원(2인 포함) · 개인회원 30만원
             </p>
 
         </div><!-- /form-wrap -->
 
         <!-- SUCCESS -->
         <div class="success" id="success">
-            <div class="s-icon">✓</div>
-            <h2>신청이 완료되었습니다!</h2>
+            <div class="s-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h2>신청이 잘 전달되었습니다</h2>
             <p>
-                소부장포럼 가입 신청이 정상 접수되었습니다.<br>
-                사무국에서 내용 검토 후 신청해 주신 연락처로 안내드리겠습니다.<br>
-                <span style="font-size:12px;color:var(--text3)">보통 2~3 영업일 이내에 연락드립니다.</span>
+                소부장포럼 가입 신청을 완료해 주셔서 감사합니다.<br>
+                사무국에서 내용 검토 후 영업일 기준 3일 이내에 개별 연락 드리겠습니다.
             </p>
-            <button class="btn-back" onclick="location.reload()">다른 신청서 작성</button>
+            <button class="btn-back" onclick="location.reload()">새로운 신청서 작성</button>
         </div>
 
     </div><!-- /container -->
@@ -1063,18 +1124,18 @@
             div.innerHTML = `
     <div class="pb-hdr">
       <div class="pnum">${idx + 1}</div>
-      <div class="plbl">${first ? '대표자 / 담당자' : `추가 인원 ${idx}`}</div>
-      ${!first ? `<button class="prm" type="button" onclick="rmPerson(${idx})">삭제</button>` : ''}
+      <div class="plbl">${first ? '대표자 / 담당자 정보' : `추가 인원 정보 (${idx})`}</div>
+      ${!first ? `<button class="prm" type="button" onclick="rmPerson(${idx})">제거</button>` : ''}
     </div>
     <div class="pb-body">
       <div class="grid2">
         <div class="fg">
           <label>성함 ${first ? '<span class="r">*</span>' : ''}</label>
-          <input class="fi pn" id="p${idx}-n" placeholder="홍길동">
+          <input class="fi pn" id="p${idx}-n" placeholder="성함을 입력하세요">
         </div>
         <div class="fg">
           <label>직책</label>
-          <input class="fi pp" id="p${idx}-p" placeholder="대표이사, 팀장 등">
+          <input class="fi pp" id="p${idx}-p" placeholder="예: 대표이사, 팀장">
         </div>
         <div class="fg">
           <label>모바일 ${first ? '<span class="r">*</span>' : ''}</label>
@@ -1082,26 +1143,26 @@
         </div>
         <div class="fg">
           <label>이메일 ${first ? '<span class="r">*</span>' : ''}</label>
-          <input class="fi pe" id="p${idx}-e" type="email" placeholder="email@example.com">
+          <input class="fi pe" id="p${idx}-e" type="email" placeholder="example@email.com">
         </div>
         <div class="fg">
           <label>전문분야</label>
-          <input class="fi px" id="p${idx}-x" placeholder="예: 반도체">
+          <input class="fi px" id="p${idx}-x" placeholder="예: 소재 공정, 시스템 보안">
         </div>
         <div class="fg">
           <label>관심 포럼</label>
-          <input class="fi pf" id="p${idx}-f" placeholder="예: ESG">
+          <input class="fi pf" id="p${idx}-f" placeholder="관심 있는 분야를 입력하세요">
         </div>
       </div>
-      <div class="fg" style="margin-top:4px">
-        <label>명함 이미지</label>
+      <div class="fg" style="margin-top:12px; margin-bottom:0;">
+        <label>명함 이미지 첨부</label>
         <div class="fua" id="drop-card-${idx}"
           ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dop(event,'card_${idx}')">
           <input type="file" id="file-card-${idx}" accept="image/*"
             onchange="hf(event,'card_${idx}')">
           <div class="fi-ico">🪪</div>
-          <div class="fi-lbl">명함 이미지 첨부</div>
-          <div class="fi-sub">PNG / JPG · 클릭 또는 드래그</div>
+          <div class="fi-lbl">디지털 명함 또는 사진 선택</div>
+          <div class="fi-sub">PNG, JPG 파일 · 최대 10MB</div>
         </div>
         <div class="fprev" id="prev-card-${idx}">
           <img id="prev-card-${idx}-img" src="" alt="">
