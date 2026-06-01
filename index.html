@@ -869,18 +869,14 @@
                                 <label>홈페이지</label>
                                 <input class="fi" id="c-web" placeholder="https://">
                             </div>
-                            <div class="fg">
+                            <div class="fg full">
                                 <label>전문분야</label>
                                 <input class="fi" id="c-expertise" placeholder="예: 반도체, 배터리">
                             </div>
                             <div class="fg full">
                                 <label>주소</label>
                                 <input class="fi" id="c-address" placeholder="사업장 주소">
-                            </div>
-                            <div class="fg full">
-                                <label>비고 / 문의사항</label>
-                                <textarea class="fi" id="c-note" placeholder="기타 전달하실 내용"></textarea>
-                            </div>
+                            </div>
                         </div>
 
                         <!-- 기업 서류 파일 -->
@@ -985,14 +981,10 @@
                                 <label>이메일 <span class="r">*</span></label>
                                 <input class="fi" id="i-email" type="email" placeholder="email@example.com">
                             </div>
-                            <div class="fg">
+                            <div class="fg full">
                                 <label>전문분야</label>
                                 <input class="fi" id="i-expertise" placeholder="예: 에너지, 반도체">
-                            </div>
-                            <div class="fg">
-                                <label>관심 포럼</label>
-                                <input class="fi" id="i-forum" placeholder="예: 미래차, ESG">
-                            </div>
+                            </div>
                             <div class="fg full">
                                 <label>주소</label>
                                 <input class="fi" id="i-address" placeholder="주소">
@@ -1170,14 +1162,10 @@
           <label>이메일 ${first ? '<span class="r">*</span>' : ''}</label>
           <input class="fi pe" id="p${idx}-e" type="email" placeholder="example@email.com">
         </div>
-        <div class="fg">
+        <div class="fg full">
           <label>전문분야</label>
           <input class="fi px" id="p${idx}-x" placeholder="예: 소재 공정, 시스템 보안">
-        </div>
-        <div class="fg">
-          <label>관심 포럼</label>
-          <input class="fi pf" id="p${idx}-f" placeholder="관심 있는 분야를 입력하세요">
-        </div>
+        </div>
       </div>
       <div class="fg" style="margin-top:12px; margin-bottom:0;">
         <label>명함 이미지 첨부</label>
@@ -1226,8 +1214,7 @@
                     position: b.querySelector('.pp')?.value.trim() || '',
                     mobile: b.querySelector('.pm')?.value.trim() || '',
                     email: b.querySelector('.pe')?.value.trim() || '',
-                    expertise: b.querySelector('.px')?.value.trim() || '',
-                    forum: b.querySelector('.pf')?.value.trim() || '',
+                    expertise: b.querySelector('.px')?.value.trim() || '',
                 };
             });
         }
@@ -1401,8 +1388,7 @@
                         expertise: v('c-expertise'),
                         address: v('c-address'),
                         region: v('c-region'),
-                        website: v('c-web'),
-                        note: v('c-note'),
+                        website: v('c-web'),
                         email: persons[0]?.email || '',
                         name: persons[0]?.name || '',
                         persons: persons,
@@ -1415,8 +1401,7 @@
                         position: v('i-position'),
                         mobile: v('i-mobile'),
                         email: v('i-email'),
-                        expertise: v('i-expertise'),
-                        forum: v('i-forum'),
+                        expertise: v('i-expertise'),
                         address: v('i-address'),
                         note: v('i-note'),
                         org_name: v('i-org'),
