@@ -1299,19 +1299,30 @@
         const v = id => document.getElementById(id)?.value.trim() || '';
         const focus = id => document.getElementById(id)?.focus();
 
+        // ── 파일 키 → 파일 유형 매핑 ────────────────────────────
+        function getFileType(key) {
+            if (key === 'bizreg')         return '사업자등록증';
+            if (key === 'brochure')       return '회사소개서';
+            if (key === 'logo')           return '기타';
+            if (key === 'icard')          return '명함이미지';
+            if (key === 'resume')         return '이력서';
+            if (key.startsWith('card_'))  return '명함이미지';
+            return '기타';
+        }
+
         // ── 제출 ─────────────────────────────────────────────────
         async function doSubmit() {
-            if (SUBMIT_URL === 'YOUR_EDGE_FUNCTION_URL_HERE') {
+            if (!SUBMIT_URL || SUBMIT_URL.includes('your-app')) {
                 alert('가입 신청 기능이 아직 설정되지 않았습니다.\n사무국에 문의해 주세요.');
                 return;
             }
             if (!validate()) return;
 
-            const btn = document.getElementById('sub-btn');
+            const btn  = document.getElementById('sub-btn');
             const spin = document.getElementById('spinner');
-            const pw = document.getElementById('prog-wrap');
-            const pb = document.getElementById('prog-bar');
-            const pt = document.getElementById('prog-txt');
+            const pw   = document.getElementById('prog-wrap');
+            const pb   = document.getElementById('prog-bar');
+            const pt   = document.getElementById('prog-txt');
 
             btn.disabled = true;
             spin.classList.add('on');
@@ -1322,8 +1333,40 @@
                 if (pt) pt.textContent = txt || '';
             };
 
+            const UPLOAD_URL = SUBMIT_URL + '/upload';
+
             try {
-                setP(20, '데이터 준비 중…');
+                // ① 첨부파일 업로드
+                const fileEntries = Object.entries(fileStore);
+                const uploadedFiles = [];
+
+                if (fileEntries.length > 0) {
+                    setP(5, '첨부파일 업로드 중…');
+                    for (let i = 0; i < fileEntries.length; i++) {
+                        const [key, file] = fileEntries[i];
+                        const fileType = getFileType(key);
+
+                        const fd = new FormData();
+                        fd.append('file', file);
+                        fd.append('file_type', fileType);
+
+                        try {
+                            const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: fd });
+                            if (uploadRes.ok) {
+                                const uploaded = await uploadRes.json();
+                                uploadedFiles.push(uploaded);
+                            }
+                        } catch (e) {
+                            console.warn('파일 업로드 실패 (계속 진행):', key, e);
+                        }
+
+                        setP(5 + Math.round((i + 1) / fileEntries.length * 50),
+                            `파일 업로드 중… (${i + 1}/${fileEntries.length})`);
+                    }
+                }
+
+                // ② 폼 데이터 구성
+                setP(60, '신청 정보 전송 중…');
 
                 let payload;
 
@@ -1342,6 +1385,7 @@
                         email: persons[0]?.email || '',
                         name: persons[0]?.name || '',
                         persons: persons,
+                        files: uploadedFiles,
                     };
                 } else {
                     payload = {
@@ -1357,17 +1401,17 @@
                         org_name: v('i-org'),
                         org_type: v('i-org-type'),
                         dept: v('i-dept'),
+                        files: uploadedFiles,
                     };
                 }
 
-                setP(60, '전송 중…');
-
+                // ③ 신청서 제출
                 const res = await fetch(SUBMIT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
-                setP(90, '처리 중…');
+                setP(95, '처리 중…');
 
                 let data;
                 try { data = await res.json(); } catch { throw new Error('서버 응답 오류'); }
