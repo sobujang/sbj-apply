@@ -748,7 +748,8 @@
         <!-- HEADER -->
         <div class="hdr">
             <div class="logo">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                 </svg>
             </div>
@@ -809,6 +810,11 @@
                             <div class="fg full">
                                 <label>회사명 <span class="r">*</span></label>
                                 <input class="fi" id="c-company" placeholder="(주)회사명">
+                            </div>
+                            <div class="fg">
+                                <label>사업자등록번호</label>
+                                <input class="fi" id="c-bizno" placeholder="000-00-00000" maxlength="12"
+                                    oninput="fmtBizNo(this)">
                             </div>
                             <div class="fg">
                                 <label>분류</label>
@@ -1065,7 +1071,8 @@
         <!-- SUCCESS -->
         <div class="success" id="success">
             <div class="s-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             </div>
@@ -1081,14 +1088,11 @@
 
     <script>
         // =========================================================
-        //  ★ 관리자 설정 — 배포 전 반드시 변경하세요 ★
-        //  Supabase 대시보드 > Edge Functions > submit-application
-        //  > 함수 URL 을 아래에 붙여넣으세요.
-        //
-        //  예: 'https://abcdefgh.supabase.co/functions/v1/submit-application'
+        //  ★ 관리자 설정 — 배포 후 반드시 변경하세요 ★
+        //  Vercel 배포 URL + /api/applications 을 입력하세요.
+        //  예: 'https://your-app.vercel.app/api/applications'
         // =========================================================
-        const SUBMIT_URL = 'https://cdlgvneimbstylcugudc.supabase.co/functions/v1/submit-application';
-        const SUPABASE_ANON_KEY = 'sb_publishable_muQHGvl6FV0XzjhStSP-fA_aV9OkE_w'; // Supabase Dashboard > Settings > API > anon public
+        const SUBMIT_URL = 'https://sbj-members.vercel.app/api/applications';
 
         // ── 상태 ──────────────────────────────────────────────────
         let curType = '기업';
@@ -1268,6 +1272,14 @@
             inp.value = v;
         }
 
+        // ── 사업자등록번호 포맷 ───────────────────────────────────
+        function fmtBizNo(inp) {
+            let v = inp.value.replace(/\D/g, '').slice(0, 10);
+            if (v.length > 5) v = v.slice(0, 3) + '-' + v.slice(3, 5) + '-' + v.slice(5);
+            else if (v.length > 3) v = v.slice(0, 3) + '-' + v.slice(3);
+            inp.value = v;
+        }
+
         // ── 유효성 검사 ───────────────────────────────────────────
         function validate() {
             if (curType === '기업') {
@@ -1311,58 +1323,49 @@
             };
 
             try {
-                const form = new FormData();
-                setP(5, '데이터 준비 중…');
+                setP(20, '데이터 준비 중…');
+
+                let payload;
 
                 if (curType === '기업') {
-                    form.append('type', '기업');
-                    form.append('category', v('c-category'));
-                    form.append('company', v('c-company'));
-                    form.append('expertise', v('c-expertise'));
-                    form.append('forum', v('c-forum') || '');
-                    form.append('address', v('c-address'));
-                    form.append('region', v('c-region'));
-                    form.append('web', v('c-web'));
-                    form.append('note', v('c-note'));
-
-                    // 파일
-                    if (fileStore['logo']) form.append('logo', fileStore['logo']);
-                    if (fileStore['bizreg']) form.append('bizreg', fileStore['bizreg']);
-                    if (fileStore['brochure']) form.append('brochure', fileStore['brochure']);
-
-                    // 소속 인원 JSON + 명함
                     const persons = getPersons().filter(p => p.name);
-                    form.append('persons', JSON.stringify(persons));
-                    persons.forEach((p, i) => {
-                        const key = `card_${p._idx}`;
-                        if (fileStore[key]) form.append(`card_${i}`, fileStore[key]);
-                    });
-
+                    payload = {
+                        type: '기업',
+                        category: v('c-category'),
+                        company: v('c-company'),
+                        biz_no: v('c-bizno'),
+                        expertise: v('c-expertise'),
+                        address: v('c-address'),
+                        region: v('c-region'),
+                        website: v('c-web'),
+                        note: v('c-note'),
+                        email: persons[0]?.email || '',
+                        name: persons[0]?.name || '',
+                        persons: persons,
+                    };
                 } else {
-                    form.append('type', '개인');
-                    form.append('name', v('i-name'));
-                    form.append('position', v('i-position'));
-                    form.append('mobile', v('i-mobile'));
-                    form.append('email', v('i-email'));
-                    form.append('expertise', v('i-expertise'));
-                    form.append('forum', v('i-forum'));
-                    form.append('address', v('i-address'));
-                    form.append('note', v('i-note'));
-                    form.append('org_name', v('i-org'));
-                    form.append('org_type', v('i-org-type'));
-                    form.append('dept', v('i-dept'));
-                    if (fileStore['icard']) form.append('ind_card', fileStore['icard']);
-                    if (fileStore['resume']) form.append('ind_resume', fileStore['resume']);
+                    payload = {
+                        type: '개인',
+                        name: v('i-name'),
+                        position: v('i-position'),
+                        mobile: v('i-mobile'),
+                        email: v('i-email'),
+                        expertise: v('i-expertise'),
+                        forum: v('i-forum'),
+                        address: v('i-address'),
+                        note: v('i-note'),
+                        org_name: v('i-org'),
+                        org_type: v('i-org-type'),
+                        dept: v('i-dept'),
+                    };
                 }
 
-                setP(30, '파일 전송 중…');
+                setP(60, '전송 중…');
 
                 const res = await fetch(SUBMIT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    },
-                    body: form
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
                 });
                 setP(90, '처리 중…');
 
