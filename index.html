@@ -1398,7 +1398,7 @@
     <div class="pb-body">
       <div class="grid2">
         <div class="fg">
-          <label>성함 ${first ? '<span class="r">*</span>' : ''}</label>
+          <label>성함 <span class="r">*</span></label>
           <input class="fi pn" id="p${idx}-n" placeholder="성함을 입력하세요">
         </div>
         <div class="fg">
@@ -1406,11 +1406,11 @@
           <input class="fi pp" id="p${idx}-p" placeholder="예: 대표이사, 팀장">
         </div>
         <div class="fg">
-          <label>모바일 ${first ? '<span class="r">*</span>' : ''}</label>
+          <label>모바일 <span class="r">*</span></label>
           <input class="fi pm" id="p${idx}-m" placeholder="010-0000-0000" oninput="fmtMobile(this)">
         </div>
         <div class="fg">
-          <label>이메일 ${first ? '<span class="r">*</span>' : ''}</label>
+          <label>이메일 <span class="r">*</span></label>
           <input class="fi pe" id="p${idx}-e" type="email" placeholder="example@email.com">
         </div>
       </div>
@@ -1564,8 +1564,6 @@
                 if (!ps[0].mobile) { alert('대표자 모바일을 입력해주세요.'); focus(`p0-m`); return false; }
                 if (!ps[0].email) { alert('대표자 이메일을 입력해주세요.'); focus(`p0-e`); return false; }
                 for (const p of ps.slice(1)) {
-                    const hasAny = p.name || p.position || p.mobile || p.email || fileStore[`card_${p._idx}`];
-                    if (!hasAny) continue;
                     if (!p.name) { alert('추가 인원 성함을 입력해주세요.'); focus(`p${p._idx}-n`); return false; }
                     if (!p.position) { alert('추가 인원 직책을 입력해주세요.'); focus(`p${p._idx}-p`); return false; }
                     if (!p.mobile) { alert('추가 인원 모바일을 입력해주세요.'); focus(`p${p._idx}-m`); return false; }
