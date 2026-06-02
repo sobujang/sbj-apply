@@ -1069,7 +1069,7 @@
                                 <input class="fi" id="c-company" placeholder="(주)회사명">
                             </div>
                             <div class="fg">
-                                <label>사업자등록번호</label>
+                                <label>사업자등록번호 <span class="r">*</span></label>
                                 <input class="fi" id="c-bizno" placeholder="000-00-00000" maxlength="12"
                                     oninput="fmtBizNo(this)">
                             </div>
@@ -1102,11 +1102,11 @@
                                 </select>
                             </div>
                             <div class="fg">
-                                <label>홈페이지</label>
+                                <label>홈페이지 <span class="r">*</span></label>
                                 <input class="fi" id="c-web" placeholder="https://">
                             </div>
                             <div class="fg full">
-                                <label>전문분야</label>
+                                <label>전문분야 <span class="r">*</span></label>
                                 <input class="fi" id="c-expertise" placeholder="예: 반도체, 배터리">
                             </div>
                             <div class="fg full">
@@ -1119,7 +1119,7 @@
                         <div class="sec-title"><span class="sn">📎</span> 기업 서류 첨부</div>
                         <div class="fgrid">
                             <div class="fg">
-                                <label>회사 로고 (PNG)</label>
+                                <label>회사 로고 (PNG) <span class="r">*</span></label>
                                 <div class="fua" id="drop-logo" ondragover="dov(event,this)" ondragleave="dlv(this)"
                                     ondrop="dop(event,'logo')">
                                     <input type="file" id="file-logo" accept="image/png,image/jpeg,image/webp"
@@ -1136,7 +1136,7 @@
                                 </div>
                             </div>
                             <div class="fg">
-                                <label>사업자등록증</label>
+                                <label>사업자등록증 <span class="r">*</span></label>
                                 <div class="fua" id="drop-bizreg" ondragover="dov(event,this)" ondragleave="dlv(this)"
                                     ondrop="dop(event,'bizreg')">
                                     <input type="file" id="file-bizreg" accept="image/*,application/pdf"
@@ -1153,7 +1153,7 @@
                                 </div>
                             </div>
                             <div class="fg full">
-                                <label>회사소개서 / 브로슈어</label>
+                                <label>회사소개서 / 브로슈어 <span class="r">*</span></label>
                                 <div class="fua" id="drop-brochure" ondragover="dov(event,this)" ondragleave="dlv(this)"
                                     ondrop="dop(event,'brochure')">
                                     <input type="file" id="file-brochure"
@@ -1228,10 +1228,6 @@
                                 <label>전문분야</label>
                                 <input class="fi" id="i-expertise" placeholder="예: 에너지, 반도체">
                             </div>
-                            <div class="fg full">
-                                <label>주소</label>
-                                <input class="fi" id="i-address" placeholder="주소">
-                            </div>
                         </div>
 
                         <!-- 소속기관 -->
@@ -1259,6 +1255,10 @@
                                 <label>부서 / 소속</label>
                                 <input class="fi" id="i-dept" placeholder="예: 경영학과, R&D센터">
                             </div>
+                            <div class="fg full">
+                                <label>주소</label>
+                                <input class="fi" id="i-address" placeholder="소속기관 또는 개인 주소">
+                            </div>
                         </div>
 
                         <!-- 개인 파일 첨부 -->
@@ -1281,7 +1281,7 @@
                                 </div>
                             </div>
                             <div class="fg">
-                                <label>이력서 / CV</label>
+                                <label>이력서 / CV <span class="r">*</span></label>
                                 <div class="fua" id="drop-resume" ondragover="dov(event,this)" ondragleave="dlv(this)"
                                     ondrop="dop(event,'resume')">
                                     <input type="file" id="file-resume" accept="application/pdf,.doc,.docx,image/*"
@@ -1297,11 +1297,6 @@
                                     <button class="frm" type="button" onclick="rf('resume')">×</button>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="fg">
-                            <label>비고 / 지원 동기</label>
-                            <textarea class="fi" id="i-note" placeholder="가입 동기나 기타 전달하실 내용을 자유롭게 작성해주세요."></textarea>
                         </div>
                     </div>
                 </div>
@@ -1407,7 +1402,7 @@
           <input class="fi pn" id="p${idx}-n" placeholder="성함을 입력하세요">
         </div>
         <div class="fg">
-          <label>직책</label>
+          <label>직책 <span class="r">*</span></label>
           <input class="fi pp" id="p${idx}-p" placeholder="예: 대표이사, 팀장">
         </div>
         <div class="fg">
@@ -1418,10 +1413,6 @@
           <label>이메일 ${first ? '<span class="r">*</span>' : ''}</label>
           <input class="fi pe" id="p${idx}-e" type="email" placeholder="example@email.com">
         </div>
-        <div class="fg full">
-          <label>전문분야</label>
-          <input class="fi px" id="p${idx}-x" placeholder="예: 소재 공정, 시스템 보안">
-        </div>
       </div>
       <div class="fg" style="margin-top:12px; margin-bottom:0;">
         <label>명함 이미지 첨부</label>
@@ -1483,7 +1474,6 @@
                     position: b.querySelector('.pp')?.value.trim() || '',
                     mobile: b.querySelector('.pm')?.value.trim() || '',
                     email: b.querySelector('.pe')?.value.trim() || '',
-                    expertise: b.querySelector('.px')?.value.trim() || '',
                 };
             });
         }
@@ -1562,14 +1552,30 @@
             if (curType === '기업') {
                 const co = v('c-company');
                 if (!co) { alert('회사명을 입력해주세요.'); focus('c-company'); return false; }
+                if (!v('c-bizno')) { alert('사업자등록번호를 입력해주세요.'); focus('c-bizno'); return false; }
+                if (!v('c-web')) { alert('홈페이지를 입력해주세요.'); focus('c-web'); return false; }
+                if (!v('c-expertise')) { alert('전문분야를 입력해주세요.'); focus('c-expertise'); return false; }
+                if (!fileStore.logo) { alert('회사 로고를 첨부해주세요.'); focus('file-logo'); return false; }
+                if (!fileStore.bizreg) { alert('사업자등록증을 첨부해주세요.'); focus('file-bizreg'); return false; }
+                if (!fileStore.brochure) { alert('회사소개서 또는 브로슈어를 첨부해주세요.'); focus('file-brochure'); return false; }
                 const ps = getPersons();
                 if (!ps.length || !ps[0].name) { alert('대표자 성함을 입력해주세요.'); focus(`p0-n`); return false; }
+                if (!ps[0].position) { alert('대표자 직책을 입력해주세요.'); focus(`p0-p`); return false; }
                 if (!ps[0].mobile) { alert('대표자 모바일을 입력해주세요.'); focus(`p0-m`); return false; }
                 if (!ps[0].email) { alert('대표자 이메일을 입력해주세요.'); focus(`p0-e`); return false; }
+                for (const p of ps.slice(1)) {
+                    const hasAny = p.name || p.position || p.mobile || p.email || fileStore[`card_${p._idx}`];
+                    if (!hasAny) continue;
+                    if (!p.name) { alert('추가 인원 성함을 입력해주세요.'); focus(`p${p._idx}-n`); return false; }
+                    if (!p.position) { alert('추가 인원 직책을 입력해주세요.'); focus(`p${p._idx}-p`); return false; }
+                    if (!p.mobile) { alert('추가 인원 모바일을 입력해주세요.'); focus(`p${p._idx}-m`); return false; }
+                    if (!p.email) { alert('추가 인원 이메일을 입력해주세요.'); focus(`p${p._idx}-e`); return false; }
+                }
             } else {
                 if (!v('i-name')) { alert('성함을 입력해주세요.'); focus('i-name'); return false; }
                 if (!v('i-mobile')) { alert('모바일을 입력해주세요.'); focus('i-mobile'); return false; }
                 if (!v('i-email')) { alert('이메일을 입력해주세요.'); focus('i-email'); return false; }
+                if (!fileStore.resume) { alert('이력서 또는 CV를 첨부해주세요.'); focus('file-resume'); return false; }
             }
             if (!document.getElementById('privacy-consent')?.checked) {
                 alert('개인정보 수집 및 이용에 동의해주세요.');
@@ -1680,7 +1686,6 @@
                         email: v('i-email'),
                         expertise: v('i-expertise'),
                         address: v('i-address'),
-                        note: v('i-note'),
                         org_name: v('i-org'),
                         org_type: v('i-org-type'),
                         dept: v('i-dept'),
