@@ -167,6 +167,86 @@
             padding: 32px 24px;
         }
 
+        /* ── GUIDE ── */
+        .guide-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .guide-list li {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 12px;
+            align-items: start;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .guide-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--surface2);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .guide-note {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .guide-link {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .guide-link:hover {
+            text-decoration: underline;
+        }
+
+        .fee-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .fee-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            background: #FAFBFC;
+        }
+
+        .fee-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .fee-amount {
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .fee-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
         /* ── TYPE SELECTOR ── */
         .type-grid {
             display: grid;
@@ -286,6 +366,10 @@
         .fg label .r {
             color: var(--red);
             margin-left: 2px;
+        }
+
+        .r {
+            color: var(--red);
         }
 
         .fi {
@@ -535,6 +619,73 @@
             transform: translateY(-2px);
         }
 
+        .fee-summary {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: #FAFBFC;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .fee-summary .label {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .fee-summary .amount {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .fee-summary .detail {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .consent-box {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            padding: 18px;
+            margin: 8px 0 16px;
+        }
+
+        .consent-label {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .consent-label input {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .consent-title {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .consent-desc {
+            display: block;
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 4px;
+        }
+
         /* ── PROGRESS ── */
         .prog-wrap {
             display: none;
@@ -743,7 +894,8 @@
             }
 
             .grid2,
-            .fgrid {
+            .fgrid,
+            .fee-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -758,6 +910,21 @@
             .sub-btn {
                 height: 56px;
                 font-size: 16px;
+            }
+
+            .guide-list li {
+                grid-template-columns: 28px 1fr;
+            }
+
+            .guide-num {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            .fee-summary {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -788,6 +955,75 @@
 
         <!-- FORM -->
         <div id="form-wrap">
+
+            <!-- 회원가입 절차 안내 -->
+            <div class="card">
+                <div class="card-hdr">회원가입 절차 안내</div>
+                <div class="card-body">
+                    <ol class="guide-list">
+                        <li>
+                            <span class="guide-num">1</span>
+                            <div>
+                                <a class="guide-link" href="https://sobujangforum.com/" target="_blank"
+                                    rel="noopener noreferrer">소부장포럼 홈페이지 가입</a>
+                                <div class="guide-note">소부장포럼 홈페이지 가입은 포럼에 정식으로 가입한 것이 아닙니다.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="guide-num">2</span>
+                            <div>
+                                사무국에서 가입한 이메일로 회원가입 안내 메일 발송
+                                <div class="guide-note">사무국 이메일: sobujang@starc.co.kr</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="guide-num">3</span>
+                            <div>
+                                소부장기술융합포럼 회원 가입신청서 작성
+                                <div class="guide-note">신청서 작성 URL: apply.sobujangforum.com</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="guide-num">4</span>
+                            <div>운영위원회 승인</div>
+                        </li>
+                        <li>
+                            <span class="guide-num">5</span>
+                            <div>
+                                연회비 납부 완료 후 신규 회원 자격 부여
+                                <div class="guide-note">운영위원회 승인 후 연회비 납부 요청 메일이 발송됩니다.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="guide-num">6</span>
+                            <div>카카오톡 소부장포럼 단체방 초대, 사무국 신규회원 소개, 가입 회원 인사</div>
+                        </li>
+                        <li>
+                            <span class="guide-num">7</span>
+                            <div>이후 매년 연회비 납부 시 회원자격 유지</div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 연회비 안내 -->
+            <div class="card">
+                <div class="card-hdr">연회비 안내</div>
+                <div class="card-body">
+                    <div class="fee-grid">
+                        <div class="fee-item">
+                            <div class="fee-label">기업 회원</div>
+                            <div class="fee-amount">연 70만원</div>
+                            <div class="fee-desc">2명까지 무료 등록, 1명 추가 시 연 10만원 부과</div>
+                        </div>
+                        <div class="fee-item">
+                            <div class="fee-label">개인 회원</div>
+                            <div class="fee-amount">연 10만원</div>
+                            <div class="fee-desc">대기업 직원, 대학교수, 공공기관 종사자 등 개인이 단체를 대표할 수 없는 경우</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- 1. 회원 구분 -->
             <div class="card">
@@ -953,6 +1189,13 @@
                             </svg>
                             인원 추가
                         </button>
+                        <div class="fee-summary">
+                            <div>
+                                <div class="label">예상 기업 연회비</div>
+                                <div class="detail" id="corp-fee-detail">등록 인원 1명, 추가 인원 없음</div>
+                            </div>
+                            <div class="amount" id="corp-fee-amount">700,000원</div>
+                        </div>
                     </div>
                 </div>
 
@@ -1065,6 +1308,19 @@
 
             </div><!-- /sec-ind -->
 
+            <div class="consent-box">
+                <label class="consent-label" for="privacy-consent">
+                    <input type="checkbox" id="privacy-consent">
+                    <span>
+                        <span class="consent-title">개인정보 수집 및 이용에 동의합니다. <span class="r">*</span></span>
+                        <span class="consent-desc">
+                            회원 가입 신청 검토, 승인 안내, 연회비 납부 안내, 단체방 초대 등 포럼 운영 목적에 필요한
+                            성명, 연락처, 이메일, 소속, 첨부서류 정보를 사무국이 확인할 수 있습니다.
+                        </span>
+                    </span>
+                </label>
+            </div>
+
             <!-- 제출 -->
             <button class="sub-btn" id="sub-btn" onclick="doSubmit()">
                 <span class="spinner" id="spinner"></span>
@@ -1076,7 +1332,7 @@
             <div class="prog-txt" id="prog-txt"></div>
             <p class="notice">
                 제출하신 내용은 사무국 검토 후 개별 안내 드립니다.<br>
-                연회비: 기업회원 70만원(2인 포함) · 개인회원 30만원
+                연회비: 기업회원 70만원(2인 포함) · 개인회원 10만원
             </p>
 
         </div><!-- /form-wrap -->
@@ -1092,7 +1348,7 @@
             <h2>신청이 잘 전달되었습니다</h2>
             <p>
                 소부장포럼 가입 신청을 완료해 주셔서 감사합니다.<br>
-                사무국에서 내용 검토 후 영업일 기준 3일 이내에 개별 연락 드리겠습니다.
+                사무국 검토 후 운영위원회 승인 및 연회비 납부 절차를 이메일로 안내드립니다.
             </p>
             <button class="btn-back" onclick="location.reload()">새로운 신청서 작성</button>
         </div>
@@ -1203,6 +1459,19 @@
                 if (n) n.textContent = i + 1;
                 if (l) l.textContent = i === 0 ? '대표자 / 담당자' : `추가 인원 ${i}`;
             });
+            updateCorpFee();
+        }
+
+        function updateCorpFee() {
+            const count = document.querySelectorAll('#persons-wrap .pb').length;
+            const extra = Math.max(0, count - 2);
+            const fee = 700000 + extra * 100000;
+            const amount = document.getElementById('corp-fee-amount');
+            const detail = document.getElementById('corp-fee-detail');
+            if (amount) amount.textContent = fee.toLocaleString('ko-KR') + '원';
+            if (detail) {
+                detail.textContent = `등록 인원 ${count}명, 추가 인원 ${extra ? `${extra}명` : '없음'}`;
+            }
         }
 
         function getPersons() {
@@ -1302,6 +1571,11 @@
                 if (!v('i-mobile')) { alert('모바일을 입력해주세요.'); focus('i-mobile'); return false; }
                 if (!v('i-email')) { alert('이메일을 입력해주세요.'); focus('i-email'); return false; }
             }
+            if (!document.getElementById('privacy-consent')?.checked) {
+                alert('개인정보 수집 및 이용에 동의해주세요.');
+                focus('privacy-consent');
+                return false;
+            }
             return true;
         }
         const v = id => document.getElementById(id)?.value.trim() || '';
@@ -1380,6 +1654,7 @@
 
                 if (curType === '기업') {
                     const persons = getPersons().filter(p => p.name);
+                    const extraPeople = Math.max(0, persons.length - 2);
                     payload = {
                         type: '기업',
                         category: v('c-category'),
@@ -1392,6 +1667,8 @@
                         email: persons[0]?.email || '',
                         name: persons[0]?.name || '',
                         persons: persons,
+                        estimated_annual_fee: 700000 + extraPeople * 100000,
+                        privacy_consent: true,
                         files: uploadedFiles,
                     };
                 } else {
@@ -1407,6 +1684,8 @@
                         org_name: v('i-org'),
                         org_type: v('i-org-type'),
                         dept: v('i-dept'),
+                        estimated_annual_fee: 100000,
+                        privacy_consent: true,
                         files: uploadedFiles,
                     };
                 }
