@@ -686,6 +686,55 @@
             margin-top: 4px;
         }
 
+        .referral-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .referral-option {
+            min-height: 52px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 13px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: var(--surface);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .referral-option:hover {
+            border-color: var(--text-muted);
+            background: #FAFBFC;
+        }
+
+        .referral-option:has(input:checked) {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+            background: #F8FAFC;
+        }
+
+        .referral-option input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .conditional-field {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .conditional-field.on {
+            display: flex;
+            animation: fadeIn 0.25s ease-out;
+        }
+
         /* ── PROGRESS ── */
         .prog-wrap {
             display: none;
@@ -895,7 +944,8 @@
 
             .grid2,
             .fgrid,
-            .fee-grid {
+            .fee-grid,
+            .referral-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1305,6 +1355,45 @@
 
             </div><!-- /sec-ind -->
 
+            <div class="card">
+                <div class="card-hdr">가입 경로</div>
+                <div class="card-body">
+                    <div class="fg" style="margin-bottom:0;">
+                        <label>소부장기술융합포럼을 어떻게 알게 되셨나요? <span class="r">*</span></label>
+                        <div class="referral-grid">
+                            <label class="referral-option">
+                                <input type="radio" name="referral-source" value="홈페이지"
+                                    onchange="updateReferralFields()">
+                                <span>홈페이지</span>
+                            </label>
+                            <label class="referral-option">
+                                <input type="radio" name="referral-source" value="지인 소개"
+                                    onchange="updateReferralFields()">
+                                <span>지인 소개</span>
+                            </label>
+                            <label class="referral-option">
+                                <input type="radio" name="referral-source" value="전시회 참관"
+                                    onchange="updateReferralFields()">
+                                <span>전시회 참관</span>
+                            </label>
+                            <label class="referral-option">
+                                <input type="radio" name="referral-source" value="기타"
+                                    onchange="updateReferralFields()">
+                                <span>기타</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fg conditional-field" id="referral-name-wrap">
+                        <label>지인 성함 <span class="r">*</span></label>
+                        <input class="fi" id="referral-name" placeholder="소개해주신 분의 성함을 입력해주세요">
+                    </div>
+                    <div class="fg conditional-field" id="referral-other-wrap">
+                        <label>기타 경로 <span class="r">*</span></label>
+                        <input class="fi" id="referral-other" placeholder="알게 된 경로를 입력해주세요">
+                    </div>
+                </div>
+            </div>
+
             <div class="consent-box">
                 <label class="consent-label" for="privacy-consent">
                     <input type="checkbox" id="privacy-consent">
@@ -1549,6 +1638,28 @@
             inp.value = v;
         }
 
+        // ── 가입 경로 ────────────────────────────────────────────
+        function getReferralSource() {
+            return document.querySelector('input[name="referral-source"]:checked')?.value || '';
+        }
+
+        function updateReferralFields() {
+            const source = getReferralSource();
+            const nameWrap = document.getElementById('referral-name-wrap');
+            const otherWrap = document.getElementById('referral-other-wrap');
+            nameWrap?.classList.toggle('on', source === '지인 소개');
+            otherWrap?.classList.toggle('on', source === '기타');
+
+            if (source !== '지인 소개') {
+                const name = document.getElementById('referral-name');
+                if (name) name.value = '';
+            }
+            if (source !== '기타') {
+                const other = document.getElementById('referral-other');
+                if (other) other.value = '';
+            }
+        }
+
         // ── 유효성 검사 ───────────────────────────────────────────
         function validate() {
             if (curType === '기업') {
@@ -1576,6 +1687,22 @@
                 if (!v('i-mobile')) { alert('모바일을 입력해주세요.'); focus('i-mobile'); return false; }
                 if (!v('i-email')) { alert('이메일을 입력해주세요.'); focus('i-email'); return false; }
                 if (!fileStore.resume) { alert('이력서 또는 CV를 첨부해주세요.'); focus('file-resume'); return false; }
+            }
+            const referralSource = getReferralSource();
+            if (!referralSource) {
+                alert('소부장기술융합포럼을 알게 된 경로를 선택해주세요.');
+                document.querySelector('input[name="referral-source"]')?.focus();
+                return false;
+            }
+            if (referralSource === '지인 소개' && !v('referral-name')) {
+                alert('지인 성함을 입력해주세요.');
+                focus('referral-name');
+                return false;
+            }
+            if (referralSource === '기타' && !v('referral-other')) {
+                alert('기타 경로를 입력해주세요.');
+                focus('referral-other');
+                return false;
             }
             if (!document.getElementById('privacy-consent')?.checked) {
                 alert('개인정보 수집 및 이용에 동의해주세요.');
@@ -1657,6 +1784,12 @@
                 setP(60, '신청 정보 전송 중…');
 
                 let payload;
+                const referralSource = getReferralSource();
+                const referralDetail = referralSource === '지인 소개'
+                    ? v('referral-name')
+                    : referralSource === '기타'
+                        ? v('referral-other')
+                        : '';
 
                 if (curType === '기업') {
                     const persons = getPersons().filter(p => p.name);
@@ -1675,6 +1808,8 @@
                         name: persons[0]?.name || '',
                         persons: persons,
                         estimated_annual_fee: 700000 + extraPeople * 100000,
+                        referral_source: referralSource,
+                        referral_detail: referralDetail,
                         privacy_consent: true,
                         files: uploadedFiles,
                     };
@@ -1692,6 +1827,8 @@
                         org_type: v('i-org-type'),
                         dept: v('i-dept'),
                         estimated_annual_fee: 100000,
+                        referral_source: referralSource,
+                        referral_detail: referralDetail,
                         privacy_consent: true,
                         files: uploadedFiles,
                     };
