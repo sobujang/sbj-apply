@@ -1570,6 +1570,10 @@
         }
 
         // ── 파일 처리 ────────────────────────────────────────────
+        function fileInputId(key) {
+            return key.startsWith('card_') ? `file-card-${key.slice(5)}` : `file-${key}`;
+        }
+
         function hf(e, key) { const f = e.target.files[0]; if (f) store(key, f); }
 
         function dop(e, key) {
@@ -1578,7 +1582,7 @@
             const f = e.dataTransfer.files[0];
             if (!f) return;
             store(key, f);
-            const inp = document.getElementById(`file-${key}`);
+            const inp = document.getElementById(fileInputId(key));
             if (inp) { const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; }
         }
         function dov(e, el) { e.preventDefault(); el.classList.add('drag'); }
@@ -1593,7 +1597,7 @@
             delete fileStore[key];
             const p = document.getElementById(`prev-${key}`);
             if (p) p.classList.remove('on');
-            const inp = document.getElementById(`file-${key}`);
+            const inp = document.getElementById(fileInputId(key));
             if (inp) inp.value = '';
         }
 
@@ -1767,12 +1771,15 @@
 
                         try {
                             const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: fd });
-                            if (uploadRes.ok) {
-                                const uploaded = await uploadRes.json();
-                                uploadedFiles.push(uploaded);
+                            let uploadData = null;
+                            try { uploadData = await uploadRes.json(); } catch { }
+                            if (!uploadRes.ok) {
+                                throw new Error(uploadData?.error || `${file.name} 업로드에 실패했습니다.`);
                             }
+                            uploadedFiles.push(uploadData);
                         } catch (e) {
-                            console.warn('파일 업로드 실패 (계속 진행):', key, e);
+                            console.error('파일 업로드 실패:', key, e);
+                            throw new Error(e?.message || `${file.name} 업로드에 실패했습니다.`);
                         }
 
                         setP(5 + Math.round((i + 1) / fileEntries.length * 50),
